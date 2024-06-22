@@ -12,12 +12,9 @@ class ProductRepository:
     def create_product(self, product: Product) -> str:
         if self.product_exists_by_shop_id(product.shop_id):
             self.add_price_to_existing_product(product.shop_id, product.prices[0])
+            return str(product.shop_id)
         product = self.collection.insert_one(product.dict())
         return str(product.inserted_id)
-
-    def get_product_list(self) -> List[Product]:
-        products = self.collection.find()
-        return [Product(**product) for product in products]
 
     def product_exists_by_shop_id(self, shop_id: int) -> bool:
         product = self.collection.find_one({"shop_id": shop_id})
