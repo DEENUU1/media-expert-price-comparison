@@ -3,10 +3,12 @@ from fastapi.staticfiles import StaticFiles
 
 from config.settings import settings
 from views.router import router
+from utils import lifespan
 
 app = FastAPI(
     debug=settings.DEBUG,
     title=settings.TITLE,
+    lifespan=lifespan,
 )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")

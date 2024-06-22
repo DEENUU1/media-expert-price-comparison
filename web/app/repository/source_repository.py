@@ -15,7 +15,7 @@ class SourceRepository:
                 status_code=409, detail=f"Source with url {source.url} already exists"
             )
         result = self.collection.insert_one(source.dict())
-        return SourceOutput(id=result.inserted_id, url=source.url)
+        return SourceOutput(id=str(result.inserted_id), url=source.url)
 
     def source_exists_by_url(self, url: str) -> bool:
         source = self.collection.find_one({"url": url})
@@ -23,4 +23,4 @@ class SourceRepository:
 
     def get_sources(self) -> List[SourceOutput]:
         sources = self.collection.find()
-        return [SourceOutput(id=source["_id"], url=source["url"]) for source in sources]
+        return [SourceOutput(id=str(source["_id"]), url=source["url"]) for source in sources]
