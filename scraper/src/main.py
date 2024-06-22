@@ -1,13 +1,17 @@
 import json
+from datetime import date
 
-from pydantic import BaseModel, Field
 from typing import Optional
+from models.product import Product
+from models.price import Price
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from utils import get_driver
 import logging
+from repository.product_repository import ProductRepository
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,26 +21,19 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-class Product(BaseModel):
-    shop_id: int
-    name: str
-    category: str
-    currency: str
-    price: float
-    description: Optional[str] = None
-    model: Optional[str] = None
-
-
 def parse_product_data(product_data: dict) -> Product:
+    price = Price(
+        price=product_data.get("offers", {}).get("price"),
+        date=date.today()
+    )
+
     return Product(
         shop_id=product_data.get("productID"),
         name=product_data.get("name"),
         category=product_data.get("category"),
-        currency=product_data.get("offers", {}).get("priceCurrency"),
-        price=product_data.get("offers", {}).get("price"),
         description=product_data.get("description"),
-        model=product_data.get("model")
-
+        model=product_data.get("model"),
+        prices=[price]
     )
 
 
@@ -76,6 +73,11 @@ def get_product_data(url: str) -> Optional[Product]:
     return product_data
 
 
-get_product_data(
+product = get_product_data(
     url="https://www.mediaexpert.pl/smartfony-i-zegarki/smartfony/smartfon-apple-iphone-15-5g-green-128gb"
 )
+
+product_repo = ProductRepository()
+product_repo.create_product(product)
+products = product_repo.get_product_list()
+print(products)
