@@ -74,10 +74,8 @@ def get_product_data(url: str) -> Optional[Product]:
     return product_data
 
 
-def scraper() -> None:
-    product = get_product_data(
-        url="https://www.mediaexpert.pl/smartfony-i-zegarki/smartfony/smartfon-apple-iphone-15-5g-green-128gb"
-    )
+def scraper(url: str) -> None:
+    product = get_product_data(url=url)
 
     product_repo = ProductRepository()
     product_repo.create_product(product)
