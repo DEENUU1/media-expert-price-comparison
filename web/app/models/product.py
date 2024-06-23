@@ -4,6 +4,7 @@ from models.price import Price
 
 
 class Product(BaseModel):
+    id: str
     shop_id: int
     name: str
     category: str

@@ -10,7 +10,15 @@ async def get_product_list() -> List[Product]:
 
     cursor = collection.find()
     products = await cursor.to_list(length=None)
-    return [Product(**product) for product in products]
+
+    valid_products = []
+    for product in products:
+        if '_id' in product:
+            product['id'] = str(product['_id'])
+            del product['_id']
+        valid_products.append(Product(**product))
+
+    return valid_products
 
 
 async def get_product(product_id: str) -> Optional[Product]:
@@ -19,6 +27,9 @@ async def get_product(product_id: str) -> Optional[Product]:
     if not await product_exists(product_id):
         return None
     product = await collection.find_one({"_id": ObjectId(product_id)})
+    if '_id' in product:
+        product['id'] = str(product['_id'])
+        del product['_id']
     return Product(**product) if product else None
 
 
