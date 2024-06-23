@@ -1,5 +1,3 @@
-from typing import List
-
 from models.price import Price
 from models.product import Product
 from config.database import get_collection
