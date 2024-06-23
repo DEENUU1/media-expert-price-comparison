@@ -11,11 +11,6 @@
 
 
 {% block content %}
-<div class="bg-slate-50 max-w-screen-lg">
-    <h1 class="text-3xl font-bold uppercase">Simple Site</h1>
-    <p>This is just a simple site for you</p>
-</div>
-
 <form id="todoForm" class="uk-form-horizontal" hx-post="/source" hx-swap="beforeend" hx-target="#todoItems"
       hx-trigger="submit">
     <div class="uk-margin uk-inline uk-width-1-1" uk-margin>
@@ -27,8 +22,8 @@
 
 <ul id="todoItems" class="uk-list uk-list-divider" hx-target="closest li" hx-swap="outerHTML">
     {% for source in sources %}
-    {% include 'source.html' with context %}
+    {% include 'source.html'  %}
     {% endfor %}
-
 </ul>
+
 {% endblock %}

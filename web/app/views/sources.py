@@ -2,7 +2,7 @@ from fastapi import Request, APIRouter, Form, Response
 from fastapi.responses import HTMLResponse
 from config.settings import settings
 from models.source import SourceInput
-from repository.source_repository import SourceRepository
+from repository.source_repository import create_source, get_sources, delete_source
 
 router = APIRouter(
     prefix="/source",
@@ -11,8 +11,8 @@ router = APIRouter(
 
 
 @router.get("/", response_class=HTMLResponse)
-def get_source_list(request: Request):
-    sources = SourceRepository().get_sources()
+async def get_source_list_handler(request: Request):
+    sources = await get_sources()
     return settings.TEMPLATES.TemplateResponse(
         name="sources.html",
         context={
@@ -23,8 +23,8 @@ def get_source_list(request: Request):
 
 
 @router.post("/", response_class=HTMLResponse)
-def create_source(request: Request, url: str = Form(...)):
-    source = SourceRepository().create_source(SourceInput(url=url))
+async def create_source_handler(request: Request, url: str = Form(...)):
+    source = await create_source(SourceInput(url=url))
     return settings.TEMPLATES.TemplateResponse(
         name="source.html",
         context={
@@ -35,5 +35,6 @@ def create_source(request: Request, url: str = Form(...)):
 
 
 @router.delete("/{source_id}", response_class=Response)
-def delete_source(source_id: str):
-    SourceRepository().delete_source(source_id)
+async def delete_source_handler(source_id: str):
+    await delete_source(source_id)
+    return

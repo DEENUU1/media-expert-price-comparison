@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+
+{% block script %}
+<script>
+    htmx.on('htmx:afterSwap', function (event) {
+        document.getElementById("contentInput").value = ""
+    });
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+
+<ul id="productList" class="uk-list uk-list-divider" hx-target="closest li" hx-swap="outerHTML">
+    {% for product in products %}
+        {% include 'product.html'  %}
+    {% endfor %}
+</ul>
+
+{% endblock %}

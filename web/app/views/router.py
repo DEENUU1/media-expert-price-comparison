@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from . import sources
+from . import sources, products
 
 
 router = APIRouter(
@@ -7,3 +7,4 @@ router = APIRouter(
 )
 
 router.include_router(sources.router)
+router.include_router(products.router)
