@@ -21,6 +21,16 @@ class SourceRepository:
         source = self.collection.find_one({"url": url})
         return bool(source)
 
+    def source_exists_by_id(self, _id: str) -> bool:
+        source = self.collection.find_one({"_id": _id})
+        return bool(source)
+
     def get_sources(self) -> List[SourceOutput]:
         sources = self.collection.find()
         return [SourceOutput(id=str(source["_id"]), url=source["url"]) for source in sources]
+
+    def delete_source(self, source_id: str) -> None:
+        if not self.source_exists_by_id(source_id):
+            raise HTTPException(status_code=404, detail="Source not found")
+        self.collection.delete_one({"_id": source_id})
+
