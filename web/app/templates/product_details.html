@@ -1,5 +1,46 @@
 {% extends "_base.html" %}
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const prices = {{ product.prices|tojson }};
 
+        const data = {
+            labels: prices.map(price => price.date),
+            datasets: [{
+                label: 'Price over Time',
+                data: prices.map(price => price.price),
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Price (zł)'
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    });
+</script>
+{% endblock %}
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white shadow-md rounded-lg p-6">
@@ -23,6 +64,8 @@
                 <li class="text-gray-800">{{ price.date }} | {{ price.price }} zł</li>
             {% endfor %}
         </ul>
+
+        <canvas id="priceChart" class="w-full h-64"></canvas>
     </div>
 </div>
 {% endblock %}

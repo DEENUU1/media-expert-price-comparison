@@ -21,7 +21,7 @@ async def get_product_list() -> List[Product]:
     return valid_products
 
 
-async def get_product(product_id: str) -> Optional[Product]:
+async def get_product(product_id: str) -> Optional[dict]:
     collection = get_collection("products")
 
     if not await product_exists(product_id):
@@ -30,7 +30,7 @@ async def get_product(product_id: str) -> Optional[Product]:
     if '_id' in product:
         product['id'] = str(product['_id'])
         del product['_id']
-    return Product(**product) if product else None
+    return Product(**product).dict() if product else None
 
 
 async def product_exists(product_id: str) -> bool:
