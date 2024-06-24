@@ -1,4 +1,5 @@
 import json
+import time
 from datetime import date
 
 from typing import Optional, Dict
@@ -56,11 +57,11 @@ def get_product_data(url: str) -> Optional[Product]:
     driver = get_driver()
     logger.info(f"Getting data for {url}")
     driver.get(url)
-    logger.info(f"Page title: {driver.title}")
 
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.TAG_NAME, "h1"))
     )
+    logger.info(f"Page title: {driver.title}")
 
     script_content = get_schema_script(driver, _type="Product")
 
@@ -70,7 +71,7 @@ def get_product_data(url: str) -> Optional[Product]:
 
     product_data = parse_product_data(script_content)
     logger.info(f"Product data: {product_data}")
-
+    driver.quit()
     return product_data
 
 

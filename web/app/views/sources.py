@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("", response_class=HTMLResponse)
 async def get_source_list_handler(request: Request):
     sources = await get_sources()
     return settings.TEMPLATES.TemplateResponse(
@@ -22,7 +22,7 @@ async def get_source_list_handler(request: Request):
     )
 
 
-@router.post("/", response_class=HTMLResponse)
+@router.post("", response_class=HTMLResponse)
 async def create_source_handler(request: Request, url: str = Form(...)):
     source = await create_source(SourceInput(url=url))
     return settings.TEMPLATES.TemplateResponse(
