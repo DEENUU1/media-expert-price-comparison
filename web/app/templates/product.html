@@ -1,6 +1,16 @@
-<li class="uk-flex uk-flex-between">
-    <a href="{{ url_for('get_product_details_handler', product_id=product.id) }}"><h2>{{product.name}}</h2></a>
-    <span>{{product.category}}</span>
-    <span>{{product.model}}</span>
-    <p>{{product.description}}</p>
-</li>
+<tr>
+    <td class="px-6 py-4 whitespace-no-wrap">
+        <a href="{{ url_for('get_product_details_handler', product_id=product.id) }}" class="text-indigo-600 hover:text-indigo-900">
+            {{product.name}}
+        </a>
+    </td>
+    <td class="px-6 py-4 whitespace-no-wrap">
+        {{product.category}}
+    </td>
+    <td class="px-6 py-4 whitespace-no-wrap">
+        {{product.model}}
+    </td>
+    <td class="px-6 py-4 whitespace-no-wrap">
+        {{product.description}}
+    </td>
+</tr>
