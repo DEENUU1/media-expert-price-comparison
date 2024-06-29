@@ -3,7 +3,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('priceChart').getContext('2d');
-        const prices = {{ product.prices|tojson }};
+        const prices = {{ price_json|tojson }};
 
         const data = {
             labels: prices.map(price => price.date),

@@ -30,9 +30,12 @@ def get_products_list_handler(request: Request, db: Session = Depends(get_db)):
 def get_product_details_handler(request: Request, product_id: int, db: Session = Depends(get_db)):
     product = get_product_by_id(db, product_id)
 
+    price_json = [price.model_dump() for price in product.prices] if product.prices else []
+
     context = {
         "request": request,
         "product": product,
+        "price_json": price_json
     }
 
     return settings.TEMPLATES.TemplateResponse(
