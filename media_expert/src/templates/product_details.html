@@ -57,6 +57,18 @@
             <span class="text-gray-600 font-semibold">Model:</span>
             <span class="text-gray-800">{{ product.model }}</span>
         </div>
+        <div class="mb-2">
+            <span class="text-gray-600 font-semibold">Max price:</span>
+            <span class="text-gray-800">{{ max_price }} zł</span>
+        </div>
+        <div class="mb-2">
+            <span class="text-gray-600 font-semibold">Min price:</span>
+            <span class="text-gray-800">{{ min_price }} zł</span>
+        </div>
+        <div class="mb-2">
+            <span class="text-gray-600 font-semibold">Avg price:</span>
+            <span class="text-gray-800">{{ avg_price }} zł</span>
+        </div>
         <p class="text-gray-800 mb-4">{{ product.description }}</p>
 
         <canvas id="priceChart" class="w-full h-64"></canvas>

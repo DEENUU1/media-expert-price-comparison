@@ -4,6 +4,8 @@ from config.database import get_db
 from fastapi.responses import HTMLResponse
 from config.settings import settings
 from repository.product_repository import get_products, get_product_by_id
+from services.product_price_stats import get_max_product_price, get_avg_product_price, get_min_product_price
+
 
 router = APIRouter(
     prefix="",
@@ -35,7 +37,10 @@ def get_product_details_handler(request: Request, product_id: int, db: Session =
     context = {
         "request": request,
         "product": product,
-        "price_json": price_json
+        "price_json": price_json,
+        "min_price": get_min_product_price(product),
+        "max_price": get_max_product_price(product),
+        "avg_price": get_avg_product_price(product)
     }
 
     return settings.TEMPLATES.TemplateResponse(
