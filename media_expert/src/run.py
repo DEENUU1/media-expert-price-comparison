@@ -1,7 +1,11 @@
 import logging
+
+from sqlalchemy.orm import Session
+
 from scraper import scraper
-from repository.source_repository_sync import SourceRepository
 from concurrent.futures import ThreadPoolExecutor
+from config.database import get_db
+from repository.source_repository import get_sources
 
 
 logging.basicConfig(
@@ -15,12 +19,15 @@ logger = logging.getLogger(__name__)
 def main():
     logger.info('Starting scraper')
 
-    source_repo = SourceRepository()
+    db: Session = next(get_db())
 
-    urls = source_repo.get_sources()
+    urls = get_sources(db)
 
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        executor.map(scraper, urls)
+    for url in urls:
+        scraper(db, url.url)
+
+    # with ThreadPoolExecutor(max_workers=4) as executor:
+    #     executor.map(scraper, urls)
 
     logger.info('Finished scraper')
 

@@ -1,19 +1,21 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-import os
 from config.settings import settings
 from views.router import router
-from utils import lifespan
+from utils import init_db
 
 
 app = FastAPI(
     debug=settings.DEBUG,
     title=settings.TITLE,
-    lifespan=lifespan,
+    # lifespan=lifespan,
 )
 
-files_in_current_dir = os.listdir('.')
-print(files_in_current_dir)
+
+@app.on_event("startup")
+def on_startup():
+    init_db()
+
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

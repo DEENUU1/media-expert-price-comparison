@@ -7,11 +7,11 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    MONGO_CONNECTION_STRING: str = os.getenv("MONGO_CONNECTION_STRING")
-    MONGO_DATABASE_NAME: str = os.getenv("MONGO_DATABASE_NAME")
+    SQLITE_DATABASE_URL: str = "sqlite:///database.db"
     TITLE: str = "Media expert price comparison"
     DEBUG: bool = True
     TEMPLATES: Jinja2Templates = Jinja2Templates(directory="templates")
     SELENIUM_GRID: str = os.getenv("SELENIUM_GRID")
+
 
 settings = Settings()

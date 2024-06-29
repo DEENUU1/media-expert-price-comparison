@@ -7,27 +7,28 @@
     });
 </script>
 {% endblock %}
-
+{% block style %}<link href="{{ url_for('static', path='/products.css') }}" rel="stylesheet">{% endblock %}
 
 {% block content %}
-<h1 class="text-red-500">Hello</h1>
-<div class="container mx-auto px-4 py-8">
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white">
+
+<div class="table-responsive">
+    <h1 class="productHeader">Products</h1>
+    <div>
+        <table>
             <thead>
                 <tr>
-                    <th class="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 text-gray-600 uppercase tracking-wider">
+                    <th>
                         Name
                     </th>
-                    <th class="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 text-gray-600 uppercase tracking-wider">
+                    <th>
                         Category
                     </th>
-                    <th class="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 text-gray-600 uppercase tracking-wider">
+                    <th>
                         Model
                     </th>
                 </tr>
             </thead>
-            <tbody id="productList" class="bg-white divide-y divide-gray-200">
+            <tbody id="productList">
                 {% for product in products %}
                     {% include 'product.html' %}
                 {% endfor %}

@@ -1,32 +1,16 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List
-from models.price import Price
+from . import Base, Price
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import List
 
 
-class Product(BaseModel):
-    id: str
-    shop_id: int
-    name: str
-    category: str
-    description: Optional[str] = None
-    model: Optional[str] = None
-    prices: List[Price] = Field(default_factory=list)
+class Product(Base):
+    __tablename__ = 'product'
 
-    def dict(self, **kwargs):
-        data = super().dict(**kwargs)
-        data['prices'] = [price.dict(**kwargs) for price in self.prices]
-        return data
-
-
-class ProductInput(BaseModel):
-    shop_id: int
-    name: str
-    category: str
-    description: Optional[str] = None
-    model: Optional[str] = None
-    prices: List[Price] = Field(default_factory=list)
-
-    def dict(self, **kwargs):
-        data = super().dict(**kwargs)
-        data['prices'] = [price.dict(**kwargs) for price in self.prices]
-        return data
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    shop_id: Mapped[int] = mapped_column(index=True)
+    name: Mapped[str] = mapped_column(index=True)
+    category: Mapped[str] = mapped_column(index=True)
+    model: Mapped[str] = mapped_column(index=True)
+    description: Mapped[str] = mapped_column(nullable=True)
+    url: Mapped[str] = mapped_column(index=True, unique=True)
+    prices: Mapped[List[Price]] = relationship("Price", backref="product", cascade="all, delete-orphan")

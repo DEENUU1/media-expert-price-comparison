@@ -1,40 +1,47 @@
-from typing import List, Optional
-
-from models.product import Product
-from config.database import get_collection
-from bson import ObjectId
-
-
-async def get_product_list() -> List[Product]:
-    collection = get_collection("products")
-
-    cursor = collection.find()
-    products = await cursor.to_list(length=None)
-
-    valid_products = []
-    for product in products:
-        if '_id' in product:
-            product['id'] = str(product['_id'])
-            del product['_id']
-        valid_products.append(Product(**product))
-
-    return valid_products
+from models import Product, Price
+from fastapi import HTTPException
+from sqlalchemy import select, insert
+from schemas.product_schemas import ProductInputSchema, ProductOutputSchema
+from sqlalchemy.orm import Session
+from typing import List
 
 
-async def get_product(product_id: str) -> Optional[dict]:
-    collection = get_collection("products")
+def create_product(db: Session, product: ProductInputSchema) -> ProductOutputSchema:
+    price_objects = [Price(**price.dict()) for price in product.prices] if product.prices else []
 
-    if not await product_exists(product_id):
-        return None
-    product = await collection.find_one({"_id": ObjectId(product_id)})
-    if '_id' in product:
-        product['id'] = str(product['_id'])
-        del product['_id']
-    return Product(**product).dict() if product else None
+    # Create Product instance
+    new_product = Product(
+        shop_id=product.shop_id,
+        name=product.name,
+        category=product.category,
+        model=product.model,
+        description=product.description,
+        url=product.url,
+        prices=price_objects
+    )
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+    return ProductOutputSchema.from_orm(new_product)
 
 
-async def product_exists(product_id: str) -> bool:
-    collection = get_collection("products")
+def get_products(db: Session) -> List[ProductOutputSchema]:
+    products = db.execute(select(Product))
+    return [ProductOutputSchema.from_orm(product) for product in products.scalars()]
 
-    product = await collection.find_one({"_id": ObjectId(product_id)})
-    return bool(product)
+
+def get_product_by_id(db: Session, product_id: int) -> ProductOutputSchema:
+    product = db.get(Product, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return ProductOutputSchema.from_orm(product)
+
+
+def product_exists_by_shop_id(db: Session, shop_id: int) -> bool:
+    return db.scalar(select(Product).where(Product.shop_id == shop_id))
+
+
+def get_product_by_shop_id(db: Session, shop_id: int) -> ProductOutputSchema:
+    product = db.scalar(select(Product).where(Product.shop_id == shop_id))
+    return ProductOutputSchema.from_orm(product)

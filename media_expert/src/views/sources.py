@@ -1,8 +1,12 @@
-from fastapi import Request, APIRouter, Form, Response
+from fastapi import Request, APIRouter, Form, Response, Depends
+from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
+
+from config.database import get_db
 from config.settings import settings
-from models.source import SourceInput
+from schemas.source_schemas import SourceOutputSchema, SourceInputSchema
 from repository.source_repository import create_source, get_sources, delete_source
+
 
 router = APIRouter(
     prefix="/source",
@@ -11,8 +15,8 @@ router = APIRouter(
 
 
 @router.get("", response_class=HTMLResponse)
-async def get_source_list_handler(request: Request):
-    sources = await get_sources()
+def get_source_list_handle(request: Request, db: Session = Depends(get_db)):
+    sources = get_sources(db)
     return settings.TEMPLATES.TemplateResponse(
         name="sources.html",
         context={
@@ -23,18 +27,21 @@ async def get_source_list_handler(request: Request):
 
 
 @router.post("", response_class=HTMLResponse)
-async def create_source_handler(request: Request, url: str = Form(...)):
-    source = await create_source(SourceInput(url=url))
+def create_source_handler(request: Request, url: str = Form(...), db: Session = Depends(get_db)):
+    source = create_source(db, SourceInputSchema(url=url))
+
+    context = {
+        "request": request,
+        "source": source,
+    }
+
     return settings.TEMPLATES.TemplateResponse(
         name="source.html",
-        context={
-            "request": request,
-            "source": source,
-        }
+        context=context
     )
 
 
 @router.delete("/{source_id}", response_class=Response)
-async def delete_source_handler(source_id: str):
-    await delete_source(source_id)
+def delete_source_handler(source_id: int, db: Session = Depends(get_db)):
+    delete_source(db, source_id)
     return

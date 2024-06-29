@@ -1,13 +1,14 @@
 <tr>
-    <td class="px-6 py-4 whitespace-no-wrap">
+    {{product}}
+    <td data-label="Name">
         <a href="{{ url_for('get_product_details_handler', product_id=product.id) }}" class="text-indigo-600 hover:text-indigo-900">
             {{product.name}}
         </a>
     </td>
-    <td class="px-6 py-4 whitespace-no-wrap">
+    <td data-label="Category">
         {{product.category}}
     </td>
-    <td class="px-6 py-4 whitespace-no-wrap">
+    <td data-label="Model">
         {{product.model}}
     </td>
 </tr>

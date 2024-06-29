@@ -2,33 +2,35 @@ import json
 from datetime import date
 
 from typing import Optional, Dict
-from models.product import Product
-from models.price import Price
 
+from sqlalchemy.orm import Session
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from utils import get_driver
 import logging
-from repository.product_repository_sync import ProductRepository
-
+from repository.product_repository import create_product, product_exists_by_shop_id, get_product_by_shop_id
+from repository.price_repository import create_price
+from schemas.product_schemas import ProductInputSchema
+from schemas.price_schemas import PriceInputSchema
 
 logger = logging.getLogger(__name__)
 
 
-def parse_product_data(product_data: dict) -> Product:
-    price = Price(
+def parse_product_data(product_data: dict) -> ProductInputSchema:
+    price = PriceInputSchema(
         price=product_data.get("offers", {}).get("price"),
-        date=date.today()
+        date=str(date.today())
     )
 
-    return Product(
+    return ProductInputSchema(
         shop_id=product_data.get("productID"),
         name=product_data.get("name"),
         category=product_data.get("category"),
         description=product_data.get("description"),
         model=product_data.get("model"),
-        prices=[price]
+        prices=[price],
+        url=product_data.get("url")
     )
 
 
@@ -52,7 +54,7 @@ def get_schema_script(driver, _type: str) -> Optional[Dict]:
     return script_content
 
 
-def get_product_data(url: str) -> Optional[Product]:
+def get_product_data(url: str) -> Optional[ProductInputSchema]:
     driver = get_driver()
     logger.info(f"Getting data for {url}")
     driver.get(url)
@@ -69,13 +71,26 @@ def get_product_data(url: str) -> Optional[Product]:
         return
 
     product_data = parse_product_data(script_content)
-    logger.info(f"Product data: {product_data}")
     driver.quit()
     return product_data
 
 
-def scraper(url: str) -> None:
+def scraper(db: Session, url: str) -> None:
     product = get_product_data(url=url)
+    logger.info(f"Product data: {product}")
 
-    product_repo = ProductRepository()
-    product_repo.create_product(product)
+    if not product:
+        return
+
+    if not product_exists_by_shop_id(db, product.shop_id):
+        product_object = create_product(db, product)
+
+        product.prices[0].product_id = product_object.id
+
+        create_price(db, product.prices[0])
+        return
+
+    existing_product_object = get_product_by_shop_id(db, product.shop_id)
+
+    product.prices[0].product_id = existing_product_object.id
+    create_price(db, product.prices[0])
