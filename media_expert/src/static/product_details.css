@@ -1,0 +1,106 @@
+.container {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container h2 {
+    font-size: 24px;
+    color: #0073e6;
+    margin-bottom: 10px;
+}
+
+.container h2 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.details div {
+    margin-bottom: 10px;
+}
+
+.details span:first-child {
+    font-weight: bold;
+    color: #555;
+    display: inline-block;
+    width: 120px;
+}
+
+.details span:last-child {
+    color: #333;
+}
+
+.container p {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+}
+
+#priceChart {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    .container h2 {
+        font-size: 20px;
+    }
+
+    .details span:first-child {
+        width: 100px;
+    }
+}
+
+
+.cardContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.card {
+    /*box-shadow: 0 4px 8px 0 rgba(138, 138, 138, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    text-align: center;
+    border: green;
+    border-radius: 10px;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.card strong {
+    font-size: 1.8rem;
+}
+
+.card span {
+    font-style: italic;
+}
+
+#maxCard {
+    background: rgba(255, 0, 0, 0.1)
+}
+
+#minCard {
+    background: rgba(0, 255, 0, 0.1);
+}
+
+#avgCard {
+    background: rgba(255, 137, 0, 0.1)
+}
+
+.description {
+    margin-bottom: 0.5rem;
+}

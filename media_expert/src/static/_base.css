@@ -1,0 +1,24 @@
+@media screen and (min-width: 1023px) {
+    :root {
+        --h2-font-size: 1.5rem;
+        --normal-font-size: 1rem;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    line-height: 1.5;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.main {
+    padding: 20px;
+}
+

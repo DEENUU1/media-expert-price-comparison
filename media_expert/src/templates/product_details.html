@@ -1,5 +1,7 @@
 {% extends "_base.html" %}
 {% block script %}
+{% block style %}<link href="{{ url_for('static', path='/product_details.css') }}" rel="stylesheet">{% endblock %}
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('priceChart').getContext('2d');
@@ -11,7 +13,7 @@
                 label: 'Price over Time',
                 data: prices.map(price => price.price),
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(255,0,0)',
                 tension: 0.1
             }]
         };
@@ -42,36 +44,44 @@
 </script>
 {% endblock %}
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-bold mb-4">{{ product.name }}</h2>
-        <div class="mb-2">
-            <span class="text-gray-600 font-semibold">Shop ID:</span>
-            <span class="text-gray-800">{{ product.shop_id }}</span>
+
+
+<div class="container">
+    <div>
+        <h2><a href="{{product.url}}">{{ product.name }}</a></h2>
+        <div class="details">
+            <div>
+                <span>Shop ID:</span>
+                <span>{{ product.shop_id }}</span>
+            </div>
+            <div>
+                <span>Category:</span>
+                <span>{{ product.category }}</span>
+            </div>
+            <div>
+                <span>Model:</span>
+                <span>{{ product.model }}</span>
+            </div>
+
+            <p class="description">{{product.description}}</p>
+
+            <div class="cardContainer">
+                <div id="maxCard" class="card">
+                    <strong>{{ max_price }} zł</strong>
+                    <span>Max price</span>
+                </div>
+                <div id="minCard" class="card">
+                    <strong>{{ min_price }} zł</strong>
+                    <span>Min price</span>
+                </div>
+                <div id="avgCard" class="card">
+                    <strong>{{ avg_price }} zł</strong>
+                    <span>Avg price</span>
+                </div>
+            </div>
+
         </div>
-        <div class="mb-2">
-            <span class="text-gray-600 font-semibold">Category:</span>
-            <span class="text-gray-800">{{ product.category }}</span>
-        </div>
-        <div class="mb-2">
-            <span class="text-gray-600 font-semibold">Model:</span>
-            <span class="text-gray-800">{{ product.model }}</span>
-        </div>
-        <div class="mb-2">
-            <span class="text-gray-600 font-semibold">Max price:</span>
-            <span class="text-gray-800">{{ max_price }} zł</span>
-        </div>
-        <div class="mb-2">
-            <span class="text-gray-600 font-semibold">Min price:</span>
-            <span class="text-gray-800">{{ min_price }} zł</span>
-        </div>
-        <div class="mb-2">
-            <span class="text-gray-600 font-semibold">Avg price:</span>
-            <span class="text-gray-800">{{ avg_price }} zł</span>
-        </div>
-        <p class="text-gray-800 mb-4">{{ product.description }}</p>
 
         <canvas id="priceChart" class="w-full h-64"></canvas>
     </div>
-</div>
-{% endblock %}
+</div>{% endblock %}
