@@ -28,3 +28,55 @@ services:
             - "5432:5432"
         env_file:
             - .env
+
+    redis:
+        image: redis:latest
+        ports:
+            - "6379:6379"
+
+    celery_worker:
+        container_name: "celery_worker"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: celery -A tasks.celery_worker worker --pool=solo --loglevel=info
+        volumes:
+            - ./app:/app
+        depends_on:
+            - redis
+            - web
+        restart: always
+        env_file:
+            - .env
+
+
+#    celery_beat:
+#        container_name: "celery_beat"
+#        build:
+#          dockerfile: Dockerfile
+#          context: .
+#        command: celery -A tasks beat -l --loglevel=info
+#        volumes:
+#          - .app:/app
+#        env_file:
+#          - .env
+#        depends_on:
+#          - redis
+#          - db
+#          - web
+#        restart: always
+
+#    flower:
+#        container_name: "flower"
+#        build:
+#            context: .
+#            dockerfile: Dockerfile
+#        command: celery -A tasks flower
+#        volumes:
+#            - ./app:/app
+#        ports:
+#            - "5556:5555"
+#        depends_on:
+#            - redis
+#            - web
+#            - celery_worker
