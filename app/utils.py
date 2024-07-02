@@ -13,9 +13,8 @@ def get_driver() -> WebDriver:
     options.add_argument('--headless')
     options.add_argument("--start-maximized")
     options.add_argument("user-agent={}".format(user_agent))
-    options.add_argument("--remote-debugging-port=9222")
 
-    service = ChromeService(executable_path="/usr/local/bin/chromedriver")
+    service = ChromeService(executable_path=ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
 
     return driver
