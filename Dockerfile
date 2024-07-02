@@ -1,6 +1,6 @@
 FROM python:3.12
 
-WORKDIR ../media_expert
+WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -11,7 +11,9 @@ RUN apt-get update && \
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
+RUN pip install psycopg2
 
-RUN addgroup --system media_expert && adduser --system --group media_expert
+RUN addgroup --system app && adduser --system --group app
 
-COPY config /media_expert/
+COPY app/config /app/config
+COPY .env /app/.env

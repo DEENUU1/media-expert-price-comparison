@@ -1,5 +1,5 @@
-media_expert/src/database.db
-media_expert/src/schema.json
+app/database.db
+app/schema.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
