@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from config.database import engine
-# from config.settings import settings
 from models import Source, Product, Price
 
 
@@ -14,11 +13,6 @@ def get_driver() -> WebDriver:
     options.add_argument('--headless=new')
     options.add_argument("--start-maximized")
     options.add_argument("user-agent={}".format(user_agent))
-
-    # driver = webdriver.Remote(
-    #     command_executor=settings.SELENIUM_GRID,
-    #     options=options,
-    # )
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
     return driver

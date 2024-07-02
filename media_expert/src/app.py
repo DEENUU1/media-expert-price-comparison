@@ -8,7 +8,6 @@ from utils import init_db
 app = FastAPI(
     debug=settings.DEBUG,
     title=settings.TITLE,
-    # lifespan=lifespan,
 )
 
 

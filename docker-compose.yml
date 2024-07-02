@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+    web:
+        hostname: web
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: web
+        command: cd src && uvicorn main:app --host 0.0.0.0 --port 8000
+        volumes:
+          - ./media_expert:/media_expert
+        ports:
+            - "8000:8000"
+        env_file:
+            - .env
+        restart: always
+        depends_on:
+            - db
+
+    db:
+        hostname: db
+        image: postgres:15
+        container_name: database
+        volumes:
+            - ./data/db:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        env_file:
+            - .env
