@@ -1,6 +1,6 @@
 from models import Product, Price
 from fastapi import HTTPException
-from sqlalchemy import select, insert
+from sqlalchemy import select
 from schemas.product_schemas import ProductInputSchema, ProductOutputSchema
 from sqlalchemy.orm import Session
 from typing import List
@@ -9,7 +9,6 @@ from typing import List
 def create_product(db: Session, product: ProductInputSchema) -> ProductOutputSchema:
     price_objects = [Price(**price.dict()) for price in product.prices] if product.prices else []
 
-    # Create Product instance
     new_product = Product(
         shop_id=product.shop_id,
         name=product.name,

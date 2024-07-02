@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 
 from config.database import get_db
 from config.settings import settings
-from schemas.source_schemas import SourceOutputSchema, SourceInputSchema
+from schemas.source_schemas import SourceInputSchema
 from repository.source_repository import create_source, get_sources, delete_source
 
 
