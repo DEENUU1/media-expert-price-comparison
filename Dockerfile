@@ -10,8 +10,8 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc
 
-RUN apt-get chromium
-RUN apt-get chromium-chromedriver
+RUN apt-get update && \
+    apt-get install -y chromium-browser chromium-driver
 
 COPY requirements.txt .
 
