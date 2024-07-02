@@ -1,3 +1,6 @@
+media_expert/src/database.db
+media_expert/src/schema.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

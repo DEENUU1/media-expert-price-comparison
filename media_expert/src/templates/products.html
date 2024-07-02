@@ -7,33 +7,38 @@
     });
 </script>
 {% endblock %}
-{% block style %}<link href="{{ url_for('static', path='/products.css') }}" rel="stylesheet">{% endblock %}
+{% block style %}
+<link href="{{ url_for('static', path='/products.css') }}" rel="stylesheet">{% endblock %}
 
 {% block content %}
 
-<div class="table-responsive">
-    <h1 class="productHeader">Products</h1>
+<div class="container">
     <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Category
-                    </th>
-                    <th>
-                        Model
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="productList">
-                {% for product in products %}
+        <h2 class="productHeader">Products</h2>
+        <div class="table-responsive">
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Model
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="productList">
+                    {% for product in products %}
                     {% include 'product.html' %}
-                {% endfor %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

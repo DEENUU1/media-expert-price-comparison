@@ -1,4 +1,4 @@
-<li class="flex justify-between items-center py-2">
+<li id="source-{{ source.id }}">
     <a href="{{source.url}}">{{ source.url }}</a>
-    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" hx-delete="/source/{{ source.id }}">Delete</button>
+    <button hx-delete="/source/{{ source.id }}" hx-target="#source-{{ source.id }}" hx-swap="outerHTML">Delete</button>
 </li>

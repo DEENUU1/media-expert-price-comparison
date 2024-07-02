@@ -1,0 +1,65 @@
+.container {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.productHeader {
+    font-size: 24px;
+    color: #0073e6;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #b50000;
+}
+
+ul.list-disc {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+ul.list-inside {
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li a {
+    color: #0073e6;
+    text-decoration: none;
+    flex-grow: 1;
+}
+
+li a:hover {
+    text-decoration: underline;
+}

@@ -13,6 +13,17 @@ th {
     background-color: #f4f4f4;
 }
 
+.container {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.productHeader {
+    font-size: 24px;
+    color: #0073e6;
+    margin-bottom: 10px;
+}
+
 @media screen and (max-width: 600px) {
     table, thead, tbody, th, td, tr {
         display: block;
@@ -57,11 +68,3 @@ th {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
-
-.productHeader {
-    text-align: center;
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-

@@ -26,6 +26,12 @@ def get_source_list_handle(request: Request, db: Session = Depends(get_db)):
     )
 
 
+@router.delete("/{source_id}", response_class=Response)
+def delete_source_handler(source_id: int, db: Session = Depends(get_db)):
+    delete_source(db, source_id)
+    return
+
+
 @router.post("", response_class=HTMLResponse)
 def create_source_handler(request: Request, url: str = Form(...), db: Session = Depends(get_db)):
     source = create_source(db, SourceInputSchema(url=url))
@@ -40,8 +46,3 @@ def create_source_handler(request: Request, url: str = Form(...), db: Session = 
         context=context
     )
 
-
-@router.delete("/{source_id}", response_class=Response)
-def delete_source_handler(source_id: int, db: Session = Depends(get_db)):
-    delete_source(db, source_id)
-    return
