@@ -3,17 +3,27 @@ from datetime import date
 
 from typing import Optional, Dict
 
-from sqlalchemy.orm import Session
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from utils import get_driver
-import logging
 from repository.product_repository import create_product, product_exists_by_shop_id, get_product_by_shop_id
 from repository.price_repository import create_price
 from schemas.product_schemas import ProductInputSchema
 from schemas.price_schemas import PriceInputSchema
+import logging
+from concurrent.futures import ThreadPoolExecutor
 
+from sqlalchemy.orm import Session
+
+from config.database import get_db
+from repository.source_repository import get_sources
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 logger = logging.getLogger(__name__)
 
 
@@ -94,3 +104,23 @@ def scraper(db: Session, url: str) -> None:
 
     product.prices[0].product_id = existing_product_object.id
     create_price(db, product.prices[0])
+
+
+def main():
+    logger.info('Starting scraper')
+
+    db: Session = next(get_db())
+
+    urls = get_sources(db)
+
+    for url in urls:
+        scraper(db, url.url)
+
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        executor.map(scraper, urls)
+
+    logger.info('Finished scraper')
+
+
+if __name__ == '__main__':
+    main()
