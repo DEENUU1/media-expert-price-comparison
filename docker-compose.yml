@@ -48,3 +48,35 @@ services:
         restart: always
         env_file:
             - .env
+
+    flower:
+        container_name: "flower"
+        build:
+            context: .
+            dockerfile: Dockerfile_app
+        command: celery -A tasks.celery_worker flower
+        volumes:
+            - ./app:/app
+        env_file:
+            - .env
+        ports:
+            - "5556:5555"
+        depends_on:
+            - redis
+            - web
+            - celery_worker
+
+    celery_beat:
+        container_name: "celery_beat"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: celery -A tasks.celery_worker beat --loglevel=info
+        volumes:
+            - ./app:/app
+        depends_on:
+            - redis
+            - web
+        restart: always
+        env_file:
+            - .env

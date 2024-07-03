@@ -2,6 +2,8 @@ import asyncio
 import logging
 
 from celery import Celery
+from celery.schedules import crontab
+
 from config.settings import settings
 from config.database import get_db
 from repository.source_repository import get_sources
@@ -17,16 +19,12 @@ celery_app: Celery = Celery(
     broker=settings.CELERY_BROKER,
     backend=settings.CELERY_BACKEND,
 )
-# celery_app.conf.beat_schedule = {
-#     "task-sharepoint-downloader-every-hour": {
-#         "task": "task_sharepoint_downloader",
-#         "schedule": crontab(minute="0", hour="*"),  # Runs every hour
-#     },
-#     "task-process-images": {
-#         "task": "task_process_images",
-#         "schedule": crontab(minute="0", hour="*"),  # Runs every hour
-#     },
-# }
+celery_app.conf.beat_schedule = {
+    "task-scraper": {
+        "task": "task_scraper",
+        "schedule": crontab(minute="10", hour="12"),
+    },
+}
 celery_app.conf.timezone = "UTC"  # Set your timezone if needed
 celery_app.conf.worker_redirect_stdouts = False
 celery_app.conf.task_routes = {"tasks.*": {"queue": "celery"}}
