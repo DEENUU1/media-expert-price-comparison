@@ -21,11 +21,11 @@ celery_app: Celery = Celery(
 )
 celery_app.conf.beat_schedule = {
     "task-scraper": {
-        "task": "task_scraper",
+        "task": "scraper",
         "schedule": crontab(minute="10", hour="12"),
     },
 }
-celery_app.conf.timezone = "UTC"  # Set your timezone if needed
+celery_app.conf.timezone = "UTC"
 celery_app.conf.worker_redirect_stdouts = False
 celery_app.conf.task_routes = {"tasks.*": {"queue": "celery"}}
 celery_app.conf.update(
