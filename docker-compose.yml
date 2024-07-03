@@ -53,7 +53,7 @@ services:
         container_name: "flower"
         build:
             context: .
-            dockerfile: Dockerfile_app
+            dockerfile: Dockerfile
         command: celery -A tasks.celery_worker flower
         volumes:
             - ./app:/app
