@@ -27,6 +27,11 @@ The project consists of 2 applications:
 - a scraper that runs every day thanks to the use of Celery and Redis
 
 
+
+https://github.com/DEENUU1/media-expert-price-comparison/assets/111304236/2fb0d919-15fb-464a-bd5f-1f4be9c33bbe
+
+
+
 ## Technologies:
 - Python
   - FastAPI
