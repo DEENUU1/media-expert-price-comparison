@@ -26,6 +26,7 @@ The project consists of 2 applications:
 - web application allowing you to add new sources to observations and view results
 - a scraper that runs every day thanks to the use of Celery and Redis
 
+
 ## Technologies:
 - Python
   - FastAPI
