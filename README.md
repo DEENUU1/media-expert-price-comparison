@@ -11,7 +11,7 @@
 <div align="center">
   <h3 align="center">Media Expert Price Comparison</h3>
   <strong align="center">
-    ...
+    Media Expert Price Comparison allows you to monitor the prices of the products you observe on a daily basis.
     <br />
     <br />
     <a href="https://github.com/DEENUU1/media-expert-price-comparison/issues">Report Bug</a>
@@ -22,17 +22,22 @@
 
 
 ## About the project
-
+The project consists of 2 applications:
+- web application allowing you to add new sources to observations and view results
+- a scraper that runs every day thanks to the use of Celery and Redis
 
 ## Technologies:
 - Python
+  - FastAPI
   - Selenium
+  - Sqlalchemy
   - Celery
   - Celery beat
 - Redis
 - PostgreSQL
 - SQLite
 - Docker
+- HTMX, HTML, CSS
 
 
 ## Installation
